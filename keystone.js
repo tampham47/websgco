@@ -12,8 +12,8 @@ var handlebars = require('express-handlebars');
 
 keystone.init({
 
-	'name': 'Dash',
-	'brand': 'Dash',
+	'name': 'websg.co',
+	'brand': 'websg.co',
 	
 	'less': 'public',
 	'static': 'public',
