@@ -9,7 +9,7 @@
  */
 
 var _ = require('underscore');
-
+var utils = require('../libs/utils');
 
 /**
 	Initialises the standard view locals
@@ -65,6 +65,16 @@ exports.requireUser = function(req, res, next) {
 	if (!req.user) {
 		req.flash('error', 'Please sign in to access this page.');
 		res.redirect('/keystone/signin');
+	} else {
+		next();
+	}
+	
+};
+
+exports.apiRequireUser = function(req, res, next) {
+	
+	if (!req.user) {
+		res.jsonp(utils.response(false, null, {message: 'Require Authentication!'}));
 	} else {
 		next();
 	}
