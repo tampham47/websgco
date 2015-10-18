@@ -5,7 +5,6 @@
 */
 
 /*global skel, jQuery */
-
 (function($) {
 
 	skel.breakpoints({
@@ -13,6 +12,43 @@
 		medium: '(max-width: 980px)',
 		small: '(max-width: 736px)',
 		xsmall: '(max-width: 480px)'
+	});
+
+	$('[name="enquiry-form"]').on('submit', function(e) {
+		e.preventDefault();
+		var $form = $(e.target);
+
+		var model = {
+			'phone': $form.find('[name="phone"]').val(),
+			'email': $form.find('[name="email"]').val(),
+			'name': $form.find('[name="name"]').val(),
+			'message.md': $form.find('[name="message"]').val()
+		};
+		console.log('enquiry-form', model);
+
+		$.ajax({
+			url: '/api/enquiries',
+			type: 'POST',
+			method: 'POST',
+			data: JSON.stringify(model),
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			success: function(data) {
+				console.log('data', data);
+				// reset form
+				$form.find('[name="phone"]').val('');
+				$form.find('[name="email"]').val('');
+				$form.find('[name="name"]').val('');
+				$form.find('[name="message"]').val('');
+				alert('Yêu cầu của bạn đã được gởi tới websg, chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất !');
+			},
+			error: function(err) {
+				console.log('err', err);
+			}
+		});
+
+		return false;
 	});
 
 	$(function() {
