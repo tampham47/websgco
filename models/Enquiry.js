@@ -7,21 +7,23 @@ var Types = keystone.Field.Types;
  */
 
 var Enquiry = new keystone.List('Enquiry', {
-	nocreate: true,
-	noedit: true
+	// noedit: true,
+	nocreate: true
 });
 
 Enquiry.add({
-	name: { type: Types.Name, required: true },
-	email: { type: Types.Email, required: true },
+	name: { type: Types.Text, required: true},
+	email: { type: Types.Email, required: true},
+	message: { type: Types.Markdown, required: true},
 	phone: { type: String },
 	enquiryType: { type: Types.Select, options: [
 		{ value: 'message', label: 'Just leaving a message' },
 		{ value: 'question', label: 'I\'ve got a question' },
 		{ value: 'other', label: 'Something else...' }
 	] },
-	message: { type: Types.Markdown, required: true },
 	createdAt: { type: Date, default: Date.now }
+}, 'Progress', {
+	isResolved: { type: Types.Boolean, index: true }
 });
 
 Enquiry.schema.pre('save', function(next) {
@@ -61,6 +63,6 @@ Enquiry.schema.methods.sendNotificationEmail = function(callback) {
 	
 };
 
-Enquiry.defaultSort = '-createdAt';
-Enquiry.defaultColumns = 'name, email, enquiryType, createdAt';
+Enquiry.defaultSort = '-createdAt isResolved';
+Enquiry.defaultColumns = 'name, email, phone, enquiryType, createdAt, isResolved';
 Enquiry.register();

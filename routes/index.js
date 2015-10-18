@@ -22,7 +22,8 @@ var keystone = require('keystone');
 var middleware = require('./middleware');
 var restcore = require('../libs/rest-core');
 var importRoutes = keystone.importer(__dirname);
-var UserRest = restcore(keystone.list('User').model);
+var userRest = restcore(keystone.list('User').model);
+var enquiryRest = restcore(keystone.list('Enquiry').model);
 
 // Common Middleware
 keystone.pre('routes', middleware.initLocals);
@@ -42,7 +43,9 @@ exports = module.exports = function(app) {
 	app.get('/blog/post/:post', routes.views.post);
 	app.all('/contact', routes.views.contact);
 	
-	app.get('/users', middleware.apiRequireUser, UserRest._getAll)
+	app.get('/api/users', middleware.apiRequireUser, userRest._getAll);
+	app.get('/api/enquiries', enquiryRest._getAll);
+	app.post('/api/enquiries', enquiryRest._post);
 
 	// NOTE: To protect a route so that only admins can see it, use the requireUser middleware:
 	// app.get('/protected', middleware.requireUser, routes.views.protected);
