@@ -14,42 +14,50 @@
 		xsmall: '(max-width: 480px)'
 	});
 
-	$('[name="enquiry-form"]').on('submit', function(e) {
-		e.preventDefault();
-		var $form = $(e.target);
+  var submitEnquiry = function(e) {
+    e.preventDefault();
+    // var $form = $(e.target);
+    var $form = $('.js-enquiry-form');
+    var $loadMore = $('.js-load-more');
 
-		var model = {
-			'phone': $form.find('[name="phone"]').val(),
-			'email': $form.find('[name="email"]').val(),
-			'name': $form.find('[name="name"]').val(),
-			'message.md': $form.find('[name="message"]').val()
-		};
-		console.log('enquiry-form', model);
+    var model = {
+      'phone': $form.find('[name="phone"]').val(),
+      'email': $form.find('[name="email"]').val(),
+      'name': $form.find('[name="name"]').val(),
+      'message.md': $form.find('[name="message"]').val()
+    };
+    // console.log('enquiry-form', model);
+    $loadMore.addClass('load-more--loading');
 
-		$.ajax({
-			url: '/api/enquiries',
-			type: 'POST',
-			method: 'POST',
-			data: JSON.stringify(model),
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			success: function(data) {
-				console.log('data', data);
-				// reset form
-				$form.find('[name="phone"]').val('');
-				$form.find('[name="email"]').val('');
-				$form.find('[name="name"]').val('');
-				$form.find('[name="message"]').val('');
-				alert('Yêu cầu của bạn đã được gởi tới websg, chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất !');
-			},
-			error: function(err) {
-				console.log('err', err);
-			}
-		});
+    $.ajax({
+      url: '/api/enquiries',
+      type: 'POST',
+      method: 'POST',
+      data: JSON.stringify(model),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      success: function(data) {
+        // console.log('data', data);
+        $loadMore.removeClass('load-more--loading');
+        // reset form
+        $form.find('[name="phone"]').val('');
+        $form.find('[name="email"]').val('');
+        $form.find('[name="name"]').val('');
+        $form.find('[name="message"]').val('');
+        alert('Yêu cầu của bạn đã được gởi tới websg, chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất !');
+      },
+      error: function(err) {
+        $loadMore.removeClass('load-more--loading');
+        console.log('err', err);
+      }
+    });
 
-		return false;
-	});
+    return false;
+  };
+
+	$('[name="enquiry-form"]').on('submit', submitEnquiry);
+  $('.js-load-more').on('click', submitEnquiry);
 
 	$(function() {
 
