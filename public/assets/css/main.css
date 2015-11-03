@@ -3038,7 +3038,6 @@
   color: #fff;
   text-transform: uppercase;
   display: block;
-  font-family: sans-serif;
   font-weight: bold;
   height: 3em;
   line-height: 3em;
@@ -3051,6 +3050,12 @@
   -webkit-transition: all .2s ease, background-color .01s ease, color .01s ease;
   transition: all .2s ease, background-color .01s ease, color .01s ease;
 }
+
+.js-load-more.load-more:hover {
+  color: #fff !important;
+  background-color: lighten(#8cd1a8, 25%) !important;
+}
+
 .load-more.load-more--loading {
   -webkit-animation: rotate 1.5s linear infinite;
   animation: rotate 1.5s linear infinite;
